@@ -12,7 +12,7 @@ const sg = pl => pl === 0 ? 1 : -1;
 const prog = (pl, a) => pl === 0 ? a : (a + 12) % 24;
 const absP = (pl, p) => pl === 0 ? p : (p + 12) % 24;
 let memo = new Map();
-
+const PRO_STORE_URL = 'https://ezradigital.itch.io/shesh-besh-race-pro';
 function newPos() { const b = new Int8Array(24); b[0] = 15; b[12] = -15; return { b, off: [0, 0] }; }
 function clonePos(p) { return { b: p.b.slice(), off: p.off.slice() }; }
 function posKey(p) { return p.b.join(',') + '|' + p.off[0] + ',' + p.off[1]; }
