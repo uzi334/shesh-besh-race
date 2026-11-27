@@ -3,43 +3,68 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="מרוץ על לוח שש-בש – משחק מרוץ בלי אכילה, עם דאבל הפוך וגניבת קוביות. נגד המחשב או שני שחקנים.">
-<title>מרוץ על לוח שש-בש</title>
+<title>מרוץ על לוח שש-בש – גרסת התנסות</title>
+<meta name="description" content="מרוץ על לוח שש-בש – משחק מרוץ בלי אכילה, עם טבליה בודדה פותחת, דאבל הפוך וגניבת קוביות. גרסת התנסות חינמית.">
+<meta name="theme-color" content="#14110f">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8E%B2%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
-<h1>🎲 מרוץ על לוח שש-בש</h1>
-<div class="sub">טבליה בודדה פותחת · בלי אכילה · טבליה אחת חוסמת · דאבל הפוך · גניבת קוביות</div>
+<body data-theme="classic">
+<header class="top">
+  <h1>🎲 מרוץ על לוח שש-בש <span class="badge demo">DEMO</span></h1>
+  <div class="sub">טבליה בודדה פותחת · בלי אכילה · טבליה אחת חוסמת · דאבל הפוך · גניבת קוביות</div>
+</header>
 <div id="status"></div>
 <div id="board" dir="ltr"></div>
-<div id="panel">
-  <div id="msg"></div>
+<main id="panel">
+  <div id="msg" aria-live="polite"></div>
   <div class="btns" id="actions"></div>
-  <div class="btns">
-    <select id="mode"><option value="ai">אני (לבן) נגד המחשב</option><option value="pvp">שני שחקנים במכשיר אחד</option></select>
-    <button id="newBtn">משחק חדש</button>
+  <section class="settings" aria-label="הגדרות">
+    <div class="row"><span class="lbl">משחק</span><div class="seg" id="modeSeg"></div></div>
+    <div class="row"><span class="lbl">רמת קושי</span><div class="seg" id="diffSeg"></div></div>
+    <div class="row"><span class="lbl">עיצוב לוח</span><div class="themes" id="themeSeg"></div></div>
+    <div class="btns">
+      <button type="button" id="newBtn">↻ משחק חדש</button>
+      <button type="button" id="rulesBtn">📖 חוקי המשחק</button>
+      <button type="button" id="upgradeBtn" class="gold">👑 שדרוג ל-PRO</button>
+    </div>
+  </section>
+</main>
+
+<div class="modal" id="rulesModal" hidden role="dialog" aria-modal="true" aria-labelledby="rulesTitle">
+  <div class="card">
+    <button type="button" class="x" data-close aria-label="סגירה">✕</button>
+    <h2 id="rulesTitle">מה מיוחד במשחק?</h2>
+    <ol class="rules">
+      <li><b>טבליה בודדה פותחת</b> – כל 15 הטבליות מתחילות בפינה הימנית-עליונה. בהתחלה רצה רק טבליה אחת, ורק כשהיא נכנסת לבית (הרבע הימני-תחתון) משחררים את השאר.</li>
+      <li><b>בלי אכילה – טבליה אחת חוסמת</b> – אין הכאה ואין העלאה. גם טבליה בודדה תופסת נקודה. מותר עד 5 חסימות ברצף, ו-6 רק למי שיש לו זוג נקודות צמודות בבית.</li>
+      <li><b>דאבל הפוך</b> – אחרי ששני השחקנים בבית: משחקים את הדאבל ואחריו את ההופכי (2-2 ואז 5-5). ב-4-3 משחקים 4-3, בוחרים דאבל אחד ומקבלים זריקה נוספת.</li>
+      <li><b>גניבת קוביות</b> – שחקן חסום? היריב משחק לעצמו את הקוביות שלא נוצלו וממשיך בתור שלו.</li>
+    </ol>
+    <p class="note">מנצח מי שמוציא ראשון את כל 15 הטבליות. מוציאים רק כשכולן בבית. ניצחון לפני שהיריב הוציא טבליה אחת = מרס.</p>
+    <p class="note">איך משחקים: לוחצים על טבליה מסומנת, ואז על הנקודה הצהובה. כדי להוציא – לוחצים על המגש בצד ימין.</p>
+    <button type="button" class="main" data-close>הבנתי, בוא נשחק</button>
   </div>
-  <details>
-    <summary>חוקי המשחק</summary>
-    <ul>
-      <li>כל 15 הטבליות של כל שחקן מתחילות בפינה הימנית-עליונה שלו. לבן (למטה) מתחיל בימין למעלה, שחור (למעלה) מתחיל בשמאל למטה – הימין-למעלה מצדו.</li>
-      <li>שני השחקנים נעים נגד כיוון השעון ומביאים את הטבליות לפינה הימנית-תחתונה שלהם (הבית). לבן: ימין למטה. שחור: שמאל למעלה.</li>
-      <li>פתיחה: כל אחד מטיל קובייה – הגבוה פותח ומטיל שתי קוביות.</li>
-      <li><b>טבליה בודדה</b> – בתחילת המשחק כל שחקן מזיז טבליה אחת בלבד, עד שהיא נכנסת לבית (הרבע הימני-תחתון שלו). רק אז אפשר להזיז את שאר הטבליות.</li>
-      <li>אין אכילה ואין העלאה. טבליה אחת של היריב חוסמת את הנקודה.</li>
-      <li><b>חסימה ברצף</b> – מותר להחזיק עד 5 נקודות ברצף, כדי להשאיר מעבר. רק שחקן שיש לו שתי טבליות על נקודות צמודות בבית שלו (הרבע הימני-תחתון) רשאי לחסום 6 ברצף.</li>
-      <li>דאבל = 4 מהלכים (לפני הפעלת חוק הדאבל ההפוך). חובה לנצל כמה שיותר קוביות; אם אפשר רק אחת – הגבוהה.</li>
-      <li><b>חוק הדאבל ההפוך</b> – לפני ששני השחקנים הכניסו טבליה לבית: דאבל משחקים רק אותו עצמו (4 מהלכים), ו-4-3 משחקים רגיל. מרגע ששניהם הגיעו לבית: דאבל משחקים קודם את הדאבל עצמו ואחריו את ההופכי שלו – 8 מהלכים (1-1 ואז 6-6, 2-2 ואז 5-5, 3-3 ואז 4-4). ב-4-3: קודם משחקים 4-3, אחר כך בוחרים דאבל אחד בלבד (4 מהלכים, בלי ההופכי), ואחריו מקבלים זריקה נוספת.</li>
-      <li><b>גניבת קוביות</b> – אם שחקן חסום ולא יכול לשחק קוביות (גם באמצע רצף 4-3 / דאבל), היריב משחק אותן לעצמו וממשיך בתור שלו. שאר הרצף של השחקן החסום (בחירת דאבל / זריקה נוספת) מתבטל.</li>
-      <li>רק כשכל 15 הטבליות בבית מותר להוציא. אפשר להוציא במספר מדויק, או במספר גבוה יותר מהטבליה הרחוקה ביותר.</li>
-      <li>הראשון שמוציא את כל הטבליות מנצח. אם ליריב לא יצאה אף טבליה – מרס.</li>
+</div>
+
+<div class="modal" id="proModal" hidden role="dialog" aria-modal="true" aria-labelledby="proTitle">
+  <div class="card pro">
+    <button type="button" class="x" data-close aria-label="סגירה">✕</button>
+    <div class="crown">👑</div>
+    <h2 id="proTitle">זמין בגרסת PRO</h2>
+    <p id="proWhat" class="note"></p>
+    <ul class="feats">
+      <li>🧠 3 רמות קושי – מתחיל, טקטי ומומחה</li>
+      <li>🎨 4 עיצובי לוח – עץ ולבד, שיש וזהב, מדבר וטורקיז, ניאון לילה</li>
+      <li>💾 ההעדפות שלך נשמרות אוטומטית</li>
+      <li>❤️ תמיכה בפיתוח המשחק</li>
     </ul>
-    <div style="opacity:.75">איך משחקים: לוחצים על טבליה (פס לבן מסמן טבליות שאפשר להזיז), ואז על הנקודה המסומנת בצהוב. כדי להוציא – לוחצים על המגש בצד ימין.</div>
-  </details>
+    <a class="buy" id="buyLink" href="#" target="_blank" rel="noopener">לרכישת הגרסה המלאה</a>
+    <button type="button" class="ghost" data-close>אולי אחר כך</button>
+  </div>
 </div>
 <script src="app.js"></script>
 </body>
